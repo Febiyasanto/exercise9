@@ -1,0 +1,137 @@
+// URK24CS1263 - FEBIYA S ANTO
+package URK24CS1263;
+
+import java.io.*;
+import java.util.*;
+
+public class FileOperationsMenu {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int choice;
+
+        do {
+            System.out.println("\n===== FILE OPERATIONS MENU =====");
+            System.out.println("1. Create a new file");
+            System.out.println("2. Rename a file");
+            System.out.println("3. Delete a file");
+            System.out.println("4. Create a directory");
+            System.out.println("5. Find absolute path of a file");
+            System.out.println("6. Display all file names in a directory");
+            System.out.println("7. Exit");
+            System.out.print("Enter your choice: ");
+            choice = sc.nextInt();
+            sc.nextLine(); // consume newline
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter file name to create: ");
+                    String createFile = sc.nextLine();
+                    createFile(createFile);
+                    break;
+
+                case 2:
+                    System.out.print("Enter existing file name: ");
+                    String oldName = sc.nextLine();
+                    System.out.print("Enter new file name: ");
+                    String newName = sc.nextLine();
+                    renameFile(oldName, newName);
+                    break;
+
+                case 3:
+                    System.out.print("Enter file name to delete: ");
+                    String deleteFile = sc.nextLine();
+                    deleteFile(deleteFile);
+                    break;
+
+                case 4:
+                    System.out.print("Enter directory name to create: ");
+                    String dirName = sc.nextLine();
+                    createDirectory(dirName);
+                    break;
+
+                case 5:
+                    System.out.print("Enter file name to get absolute path: ");
+                    String absFile = sc.nextLine();
+                    findAbsolutePath(absFile);
+                    break;
+
+                case 6:
+                    System.out.print("Enter directory name to list files: ");
+                    String dirList = sc.nextLine();
+                    displayFilesInDirectory(dirList);
+                    break;
+
+                case 7:
+                    System.out.println("Exiting... Goodbye!");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice. Please try again!");
+            }
+        } while (choice != 7);
+
+        sc.close();
+    }
+
+    // --- Function Definitions ---
+
+    static void createFile(String name) {
+        try {
+            File file = new File(name);
+            if (file.createNewFile()) {
+                System.out.println("✅ File created successfully: " + file.getName());
+            } else {
+                System.out.println("⚠️ File already exists.");
+            }
+        } catch (IOException e) {
+            System.out.println("Error creating file: " + e.getMessage());
+        }
+    }
+
+    static void renameFile(String oldName, String newName) {
+        File oldFile = new File(oldName);
+        File newFile = new File(newName);
+        if (oldFile.renameTo(newFile)) {
+            System.out.println("✅ File renamed successfully!");
+        } else {
+            System.out.println("⚠️ Error renaming file. Make sure file exists.");
+        }
+    }
+
+    static void deleteFile(String name) {
+        File file = new File(name);
+        if (file.delete()) {
+            System.out.println("✅ File deleted successfully!");
+        } else {
+            System.out.println("⚠️ Error deleting file. File may not exist.");
+        }
+    }
+
+    static void createDirectory(String dirName) {
+        File dir = new File(dirName);
+        if (dir.mkdir()) {
+            System.out.println("✅ Directory created successfully!");
+        } else {
+            System.out.println("⚠️ Error creating directory. It may already exist.");
+        }
+    }
+
+    static void findAbsolutePath(String fileName) {
+        File file = new File(fileName);
+        System.out.println("📂 Absolute path: " + file.getAbsolutePath());
+    }
+
+    static void displayFilesInDirectory(String dirName) {
+        File dir = new File(dirName);
+        if (dir.exists() && dir.isDirectory()) {
+            String[] files = dir.list();
+            System.out.println("📁 Files in directory '" + dirName + "':");
+            for (String file : files) {
+                System.out.println(" - " + file);
+            }
+        } else {
+            System.out.println("⚠️ Directory does not exist!");
+        }
+    }
+}
