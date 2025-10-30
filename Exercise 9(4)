@@ -1,0 +1,39 @@
+//URK24CS1263 - FEBIYA S ANTO
+package URK24CS1263;
+
+import java.io.*;
+import java.util.*;
+
+public class LowStockReport {
+    public static void main(String[] args) {
+        try {
+            File inputFile = new File("inventory.txt");
+            Scanner sc = new Scanner(inputFile);
+            FileWriter writer = new FileWriter("low_stock_alert.txt");
+
+            writer.write("Low Stock Items (Stock < 5)\n");
+            writer.write("---------------------------------\n");
+
+            while (sc.hasNextLine()) {
+                String line = sc.nextLine();
+                String[] parts = line.split(",");
+
+                String name = parts[0].trim();
+                int stock = Integer.parseInt(parts[1].trim());
+                String price = parts[2].trim();
+
+                if (stock < 5) {
+                    writer.write(name + " - Stock: " + stock + " - Price: " + price + "\n");
+                }
+            }
+
+            sc.close();
+            writer.close();
+
+            System.out.println("✅ low_stock_alert.txt created successfully!");
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+}
